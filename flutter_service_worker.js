@@ -3,30 +3,46 @@ const MANIFEST = 'flutter-app-manifest';
 const TEMP = 'flutter-temp-cache';
 const CACHE_NAME = 'flutter-app-cache';
 const RESOURCES = {
-  "assets/AssetManifest.json": "cc90d27f595cea7cf7c35f813b64e878",
-"assets/assets/AppIcons.ttf": "994ab9b7ab566b3824e19cf975efac75",
-"assets/assets/profile.json": "b49b813ebf5d5f86a8b22c7db5593b9c",
-"assets/FontManifest.json": "2acc0f7ec9fe8d738c79cd9d34f6f5a1",
-"assets/fonts/MaterialIcons-Regular.otf": "1288c9e28052e028aba623321f7826ac",
-"assets/NOTICES": "0e0e9f90d5b3303f6c4e3bedc7a4a131",
-"assets/packages/cupertino_icons/assets/CupertinoIcons.ttf": "6d342eb68f170c97609e9da345464e5e",
+  "version.json": "3bb5d145734d575d66656549d0d65210",
+"index.html": "5b58d0ca03833ce63c8eb94483ee1acf",
+"/": "5b58d0ca03833ce63c8eb94483ee1acf",
+"main.dart.js": "72745a454d423406ebbc19a776398d3e",
+"flutter.js": "a85fcf6324d3c4d3ae3be1ae4931e9c5",
 "favicon.png": "5dcef449791fa27946b3d35ad8803796",
 "icons/Icon-192.png": "ac9a721a12bbc803b44f645561ecb1e1",
+"icons/Icon-maskable-192.png": "c457ef57daa1d16f64b27b786ec2ea3c",
+"icons/Icon-maskable-512.png": "301a7604d45b3e739efc881eb04896ea",
 "icons/Icon-512.png": "96e752610906ba2a93c65f8abe1645f1",
-"index.html": "dd9a95e6aca590b9f77e471952a0ff2f",
-"/": "dd9a95e6aca590b9f77e471952a0ff2f",
-"main.dart.js": "8e7941791773a771e6701d8632a5a423",
-"manifest.json": "c9f762757530c31a009115f8d966792e",
-"version.json": "754eea052d2e8222e1f99329f15dd69d"
+"manifest.json": "766b8c72bac990516ea3676940992e7d",
+"assets/AssetManifest.json": "9773103775d6ea0969d526c4ce5595a7",
+"assets/NOTICES": "a71e4daa8d13d63f8c28d821471a07ab",
+"assets/FontManifest.json": "dc3d03800ccca4601324923c0b1d6d57",
+"assets/packages/window_manager/images/ic_chrome_unmaximize.png": "4a90c1909cb74e8f0d35794e2f61d8bf",
+"assets/packages/window_manager/images/ic_chrome_minimize.png": "4282cd84cb36edf2efb950ad9269ca62",
+"assets/packages/window_manager/images/ic_chrome_maximize.png": "af7499d7657c8b69d23b85156b60298c",
+"assets/packages/window_manager/images/ic_chrome_close.png": "75f4b8ab3608a05461a31fc18d6b47c2",
+"assets/packages/cupertino_icons/assets/CupertinoIcons.ttf": "6d342eb68f170c97609e9da345464e5e",
+"assets/packages/gmail/assets/gmail.png": "a189ad2bcf2a9214789686f207e73aaf",
+"assets/fonts/MaterialIcons-Regular.otf": "e7069dfd19b331be16bed984668fe080",
+"assets/assets/wallpapers/wp_1.jpg": "7d5e5fe7a0f5402c1dc170ad273d9f6f",
+"assets/assets/apps/testflight.png": "f094f783a36a5e2a4be88f8861a0e374",
+"assets/assets/apps/github.png": "ec3a60c8c6539a07eb70b52f6737ea6e",
+"assets/assets/apps/gmail.png": "a189ad2bcf2a9214789686f207e73aaf",
+"assets/assets/apps/linkedin.png": "54be6925a94ce44a423338b2ededc9bd",
+"assets/assets/apps/youtube.png": "ca6d67e60f758d352745329b283e8f32",
+"assets/assets/apps/camera.png": "fc8f5c6299d6900e0ada75bb92685013",
+"assets/assets/profile.json": "190c1c6f0793b74c812c7152493e4c29",
+"canvaskit/canvaskit.js": "97937cb4c2c2073c968525a3e08c86a3",
+"canvaskit/profiling/canvaskit.js": "c21852696bc1cc82e8894d851c01921a",
+"canvaskit/profiling/canvaskit.wasm": "371bc4e204443b0d5e774d64a046eb99",
+"canvaskit/canvaskit.wasm": "3de12d898ec208a5f31362cc00f09b9e"
 };
 
 // The application shell files that are downloaded before a service worker can
 // start.
 const CORE = [
-  "/",
-"main.dart.js",
+  "main.dart.js",
 "index.html",
-"assets/NOTICES",
 "assets/AssetManifest.json",
 "assets/FontManifest.json"];
 // During install, the TEMP cache is populated with the application shell files.
@@ -35,7 +51,7 @@ self.addEventListener("install", (event) => {
   return event.waitUntil(
     caches.open(TEMP).then((cache) => {
       return cache.addAll(
-        CORE.map((value) => new Request(value + '?revision=' + RESOURCES[value], {'cache': 'reload'})));
+        CORE.map((value) => new Request(value, {'cache': 'reload'})));
     })
   );
 });
@@ -125,9 +141,11 @@ self.addEventListener("fetch", (event) => {
     .then((cache) =>  {
       return cache.match(event.request).then((response) => {
         // Either respond with the cached resource, or perform a fetch and
-        // lazily populate the cache.
+        // lazily populate the cache only if the resource was successfully fetched.
         return response || fetch(event.request).then((response) => {
-          cache.put(event.request, response.clone());
+          if (response && Boolean(response.ok)) {
+            cache.put(event.request, response.clone());
+          }
           return response;
         });
       })
@@ -161,7 +179,7 @@ async function downloadOffline() {
     }
     currentContent[key] = true;
   }
-  for (var resourceKey in Object.keys(RESOURCES)) {
+  for (var resourceKey of Object.keys(RESOURCES)) {
     if (!currentContent[resourceKey]) {
       resources.push(resourceKey);
     }

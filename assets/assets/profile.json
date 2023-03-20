@@ -1,5 +1,5 @@
 {
-  "name": "Artem Krupp",
+  "name": "Artem Artemov",
   "bio": "Paranoid programmer \uD83E\uDD2A",
   "avatar": "https://www.nicepng.com/png/full/145-1451818_drawing-adventure-bmo-adventure-time-bmo-drawing.png",
   "github_url": "https://github.com/iKrupp",
@@ -21,7 +21,7 @@
   "work_experience": [
     {
       "company_name": "Freelance",
-      "company_logo": "https://uploads-ssl.webflow.com/5c29380b1110ec92a203aa84/5c4406f679dc69b549b48fa6_p17s2tfgc31jte13d51pea1l2oblr3.png",
+      "company_logo": "https://raw.githubusercontent.com/arteminthesky/iphone_desktop/master/cv_app/assets/android.png",
       "start_date": {
         "month": 9,
         "year": 2016
@@ -47,13 +47,27 @@
     },
     {
       "company_name": "Mercury Development, LLC",
-      "company_logo": "https://pbs.twimg.com/profile_images/378800000608544715/d9394dcd3a76e3e827611b01615b14a6_400x400.png",
+      "company_logo": "https://raw.githubusercontent.com/arteminthesky/iphone_desktop/master/cv_app/assets/md.jpg",
       "link": "https://mercdev.com/",
       "start_date": {
         "month": 5,
         "year": 2018
       },
+      "end_date": {
+        "month": 2,
+        "year": 2023
+      },
       "activity_kind": "Development of cross-platform applications on Flutter. Android Application Development."
+    },
+    {
+      "company_name": "Yandex",
+      "company_logo": "https://raw.githubusercontent.com/arteminthesky/iphone_desktop/master/cv_app/assets/ya.png",
+      "link": "https://ya.ru/",
+      "start_date": {
+        "month": 2,
+        "year": 2023
+      },
+      "activity_kind": "Mobile Application Developer"
     }
   ]
 }
